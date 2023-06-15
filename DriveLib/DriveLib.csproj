@@ -68,7 +68,6 @@
     <ItemGroup>
         <Compile Include="Files\FileManager.cs" />
         <Compile Include="Files\Manifest.cs" />
-        <Compile Include="Ioc\Installer.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Providers\Provider.cs" />
         <Compile Include="Serialization\JsonManager.cs" />

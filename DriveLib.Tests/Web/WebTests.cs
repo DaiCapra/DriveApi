@@ -11,9 +11,6 @@ namespace DriveLib.Tests.Web
         {
             var installer = new Installer();
             installer.Install();
-
-            
-            
         }
 
         [Test]
