@@ -172,16 +172,17 @@ namespace DriveLib.Web.Communication
             return result;
         }
 
-        public void Initialize()
+        public bool Initialize()
         {
             var credentials = CreateCredentials();
             if (credentials == null)
             {
-                return;
+                return false;
             }
 
             _driveService = CreateService(credentials);
             Initialized = true;
+            return true;
         }
 
         private GoogleCredential CreateCredentials()

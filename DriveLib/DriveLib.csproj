@@ -67,7 +67,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Files\FileManager.cs" />
-        <Compile Include="Files\Manifest.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Providers\Provider.cs" />
         <Compile Include="Serialization\JsonManager.cs" />
@@ -77,6 +76,9 @@
         <Compile Include="Web\Communication\ClientSettingsProvider.cs" />
         <Compile Include="Web\Communication\IClientService.cs" />
         <Compile Include="Web\Communication\IClientSettingsProvider.cs" />
+        <Compile Include="Web\Handles\DownloadHandle.cs" />
+        <Compile Include="Web\Handles\ProgressHandle.cs" />
+        <Compile Include="Web\Handles\UploadHandle.cs" />
         <Compile Include="Web\MetadataBuilder.cs" />
         <Compile Include="Web\MimeTypes.cs" />
         <Compile Include="Web\WebService.cs" />
@@ -87,9 +89,6 @@
     </ItemGroup>
     <ItemGroup>
       <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Web\Handles" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

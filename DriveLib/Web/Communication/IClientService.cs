@@ -33,6 +33,6 @@ namespace DriveLib.Web.Communication
             Action<IDownloadProgress> callback = null,
             CancellationTokenSource cts = null);
 
-        void Initialize();
+        bool Initialize();
     }
 }

@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using DriveLib.Web.Communication;
+using DriveLib.Web.Handles;
 using Google.Apis.Download;
 using Google.Apis.Upload;
 using LogLib.Logging;
@@ -22,19 +23,13 @@ namespace DriveLib.Web
             _clientService = clientService;
         }
 
-        public void Initialize()
-        {
-            _clientService.Initialize();
-        }
-
         public async Task<bool> Upload(
             Stream stream,
             File metadata,
-            Action<IUploadProgress> callback = null,
-            CancellationTokenSource cts = null
+            UploadHandle handle = null
         )
         {
-            var result = await _clientService.UploadAsync(stream, metadata);
+            var result = await _clientService.UploadAsync(stream, metadata, handle?.Callback, handle);
             return result.Success;
         }
 
@@ -58,11 +53,10 @@ namespace DriveLib.Web
         public async Task<bool> Download(
             Stream stream,
             string fileId,
-            Action<IDownloadProgress> callback = null,
-            CancellationTokenSource cts = null
+            DownloadHandle handle = null
         )
         {
-            var result = await _clientService.DownloadFileAsync(stream, fileId, callback, cts);
+            var result = await _clientService.DownloadFileAsync(stream, fileId, handle?.Callback, handle);
             return result.Success;
         }
 
@@ -70,11 +64,10 @@ namespace DriveLib.Web
             Stream stream,
             File metadata,
             string fileId,
-            Action<IUploadProgress> callback = null,
-            CancellationTokenSource cts = null
+            UploadHandle handle = null
         )
         {
-            var result = await _clientService.UpdateAsync(stream, metadata, fileId, callback, cts);
+            var result = await _clientService.UpdateAsync(stream, metadata, fileId, handle?.Callback, handle);
             return result.Success;
         }
     }
