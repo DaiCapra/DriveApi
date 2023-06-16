@@ -80,7 +80,7 @@
         <Compile Include="Web\Handles\ProgressHandle.cs" />
         <Compile Include="Web\Handles\UploadHandle.cs" />
         <Compile Include="Web\MetadataBuilder.cs" />
-        <Compile Include="Web\MimeTypes.cs" />
+        <Compile Include="Web\MimeType.cs" />
         <Compile Include="Web\WebService.cs" />
         <Compile Include="Web\Errors\Error.cs" />
         <Compile Include="Web\Results\DownloadResult.cs" />

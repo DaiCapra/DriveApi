@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DriveLib.Files;
 using DriveLib.Web.Errors;
+using DriveLib.Web.Handles;
 using DriveLib.Web.Results;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Download;
@@ -86,15 +87,17 @@ namespace DriveLib.Web.Communication
         public async Task<Result> UpdateAsync(Stream stream,
             File metadata,
             string fileId,
-            Action<IUploadProgress> callback = null,
-            CancellationTokenSource cts = null)
+            UploadHandle handle = null
+        )
         {
             var result = new Result();
 
             try
             {
                 var request = _driveService.Files.Update(metadata, fileId, stream, metadata.MimeType);
-                var response = await request.UploadAsync(GetToken(cts));
+                InitUploadHandle(handle, request);
+
+                var response = await request.UploadAsync(GetToken(handle));
 
                 result.Success = response.Status == UploadStatus.Completed;
                 result.AddException(response.Exception);
@@ -112,8 +115,7 @@ namespace DriveLib.Web.Communication
         public async Task<Result> UploadAsync(
             Stream stream,
             File metadata,
-            Action<IUploadProgress> callback = null,
-            CancellationTokenSource cts = null
+            UploadHandle handle = null
         )
         {
             var result = new Result();
@@ -121,7 +123,10 @@ namespace DriveLib.Web.Communication
             try
             {
                 var request = _driveService.Files.Create(metadata, stream, metadata.MimeType);
-                var response = await request.UploadAsync(GetToken(cts));
+                InitUploadHandle(handle, request);
+
+                var response = await request.UploadAsync(GetToken(handle));
+
                 result.Success = response.Status == UploadStatus.Completed;
                 result.AddException(response.Exception);
             }
@@ -137,20 +142,17 @@ namespace DriveLib.Web.Communication
         public async Task<DownloadResult> DownloadFileAsync(
             Stream stream,
             string fileId,
-            Action<IDownloadProgress> callback = null,
-            CancellationTokenSource cts = null)
+            DownloadHandle handle = null
+        )
         {
             var result = new DownloadResult();
 
             try
             {
                 var request = _driveService.Files.Get(fileId);
-                if (callback != null)
-                {
-                    request.MediaDownloader.ProgressChanged += callback;
-                }
+                InitDownloadHandle(handle, request);
 
-                var response = await request.DownloadAsync(stream, GetToken(cts));
+                var response = await request.DownloadAsync(stream, GetToken(handle));
                 if (response != null)
                 {
                     result.Status = response.Status;
@@ -172,8 +174,14 @@ namespace DriveLib.Web.Communication
             return result;
         }
 
-        public bool Initialize()
+
+        public bool Initialize(string secretPath = null)
         {
+            if (!string.IsNullOrEmpty(secretPath))
+            {
+                Settings.SecretPath = secretPath;
+            }
+
             var credentials = CreateCredentials();
             if (credentials == null)
             {
@@ -183,6 +191,52 @@ namespace DriveLib.Web.Communication
             _driveService = CreateService(credentials);
             Initialized = true;
             return true;
+        }
+
+        private void InitUploadHandle(UploadHandle handle, FilesResource.UpdateMediaUpload request)
+        {
+            if (handle == null)
+            {
+                return;
+            }
+
+            request.ProgressChanged += obj =>
+            {
+                handle.Exception = obj.Exception;
+                handle.Status = obj.Status;
+                handle.BytesSent = obj.BytesSent;
+                handle?.ProgressChanged?.Invoke();
+            };
+        }
+
+        private void InitUploadHandle(UploadHandle handle, FilesResource.CreateMediaUpload request)
+        {
+            if (handle == null)
+            {
+                return;
+            }
+
+            request.ProgressChanged += obj =>
+            {
+                handle.Exception = obj.Exception;
+                handle.Status = obj.Status;
+                handle.BytesSent = obj.BytesSent;
+            };
+        }
+
+        private void InitDownloadHandle(DownloadHandle handle, FilesResource.GetRequest request)
+        {
+            if (handle == null)
+            {
+                return;
+            }
+
+            request.MediaDownloader.ProgressChanged += obj =>
+            {
+                handle.Exception = obj.Exception;
+                handle.Status = obj.Status;
+                handle.BytesDownloaded = obj.BytesDownloaded;
+            };
         }
 
         private GoogleCredential CreateCredentials()
@@ -199,7 +253,7 @@ namespace DriveLib.Web.Communication
                 return null;
             }
 
-            if (!_fileManager.TryReadFile(Settings.SecretPath, out var json))
+            if (!_fileManager.TryReadAllText(Settings.SecretPath, out var json))
             {
                 _logger.Error($"Could not read secret file: {Settings.SecretPath}");
                 return null;

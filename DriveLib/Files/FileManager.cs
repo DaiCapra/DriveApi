@@ -13,7 +13,7 @@ namespace DriveLib.Files
             _logger = logger;
         }
 
-        public bool TryReadFile(string path, out string text)
+        public bool TryReadAllText(string path, out string text)
         {
             try
             {
@@ -23,6 +23,20 @@ namespace DriveLib.Files
             catch (Exception e)
             {
                 text = string.Empty;
+                _logger.Error(e);
+                return false;
+            }
+        }
+
+        public bool TryWriteAllText(string path, string text)
+        {
+            try
+            {
+                File.WriteAllText(path, text);
+                return true;
+            }
+            catch (Exception e)
+            {
                 _logger.Error(e);
                 return false;
             }

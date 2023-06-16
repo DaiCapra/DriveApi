@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using DriveLib.Web.Handles;
 using DriveLib.Web.Results;
 using Google.Apis.Download;
 using Google.Apis.Upload;
@@ -17,22 +18,21 @@ namespace DriveLib.Web.Communication
         Task<Result> UpdateAsync(Stream stream,
             File metadata,
             string fileId,
-            Action<IUploadProgress> callback = null,
-            CancellationTokenSource cts = null);
+            UploadHandle handle = null
+        );
 
         Task<Result> UploadAsync(
             Stream stream,
             File metadata,
-            Action<IUploadProgress> callback = null,
-            CancellationTokenSource cts = null
+            UploadHandle handle = null
         );
 
         Task<DownloadResult> DownloadFileAsync(
             Stream stream,
             string fileId,
-            Action<IDownloadProgress> callback = null,
-            CancellationTokenSource cts = null);
+            DownloadHandle handle = null
+        );
 
-        bool Initialize();
+        bool Initialize(string secretPath = null);
     }
 }

@@ -12,15 +12,5 @@ namespace DriveLib.Web.Handles
             size = 0;
             name = string.Empty;
         }
-
-        protected abstract long TransferredBytes { get; }
-
-        public float GetProgress()
-        {
-            var max = size != 0
-                ? size
-                : 1;
-            return TransferredBytes / (float)max;
-        }
     }
 }

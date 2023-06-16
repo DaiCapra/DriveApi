@@ -29,7 +29,7 @@ namespace DriveLib.Web
             UploadHandle handle = null
         )
         {
-            var result = await _clientService.UploadAsync(stream, metadata, handle?.Callback, handle);
+            var result = await _clientService.UploadAsync(stream, metadata, handle);
             return result.Success;
         }
 
@@ -56,7 +56,7 @@ namespace DriveLib.Web
             DownloadHandle handle = null
         )
         {
-            var result = await _clientService.DownloadFileAsync(stream, fileId, handle?.Callback, handle);
+            var result = await _clientService.DownloadFileAsync(stream, fileId, handle);
             return result.Success;
         }
 
@@ -67,7 +67,7 @@ namespace DriveLib.Web
             UploadHandle handle = null
         )
         {
-            var result = await _clientService.UpdateAsync(stream, metadata, fileId, handle?.Callback, handle);
+            var result = await _clientService.UpdateAsync(stream, metadata, fileId, handle);
             return result.Success;
         }
     }
