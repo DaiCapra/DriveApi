@@ -5,15 +5,14 @@ namespace DriveLib.Web.Handles
 {
     public class DownloadHandle : ProgressHandle, IDownloadProgress
     {
-        public Action ProgressChanged { get; set; }
         public DownloadStatus Status { get; set; }
         public long BytesDownloaded { get; set; }
         public Exception Exception { get; set; }
 
-        public float GetProgress()
+        public override float GetProgress()
         {
-            var max = size != 0
-                ? size
+            var max = Size != 0
+                ? Size
                 : 1;
 
             return BytesDownloaded / (float)max;

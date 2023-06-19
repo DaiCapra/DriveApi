@@ -205,7 +205,7 @@ namespace DriveLib.Web.Communication
                 handle.Exception = obj.Exception;
                 handle.Status = obj.Status;
                 handle.BytesSent = obj.BytesSent;
-                handle?.ProgressChanged?.Invoke();
+                handle?.ProgressChanged?.Invoke(handle);
             };
         }
 
@@ -221,6 +221,7 @@ namespace DriveLib.Web.Communication
                 handle.Exception = obj.Exception;
                 handle.Status = obj.Status;
                 handle.BytesSent = obj.BytesSent;
+                handle?.ProgressChanged?.Invoke(handle);
             };
         }
 
@@ -236,6 +237,7 @@ namespace DriveLib.Web.Communication
                 handle.Exception = obj.Exception;
                 handle.Status = obj.Status;
                 handle.BytesDownloaded = obj.BytesDownloaded;
+                handle?.ProgressChanged?.Invoke(handle);
             };
         }
 

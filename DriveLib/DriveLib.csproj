@@ -11,6 +11,7 @@
         <AssemblyName>DriveLib</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,6 +54,7 @@
         <Reference Include="LogLib">
           <HintPath>..\..\..\_Libraries\LogLib\LogLib\bin\Debug\LogLib.dll</HintPath>
         </Reference>
+        <Reference Include="mscorlib" />
         <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
           <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
         </Reference>
@@ -62,6 +64,10 @@
         <Reference Include="System" />
         <Reference Include="System.Core" />
         <Reference Include="System.Data" />
+        <Reference Include="System.IO.Compression.FileSystem" />
+        <Reference Include="System.IO.Compression.ZipFile, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+          <HintPath>..\packages\System.IO.Compression.ZipFile.4.3.0\lib\net46\System.IO.Compression.ZipFile.dll</HintPath>
+        </Reference>
         <Reference Include="System.Net.Http" />
         <Reference Include="System.Xml" />
     </ItemGroup>
@@ -77,6 +83,7 @@
         <Compile Include="Web\Communication\IClientService.cs" />
         <Compile Include="Web\Communication\IClientSettingsProvider.cs" />
         <Compile Include="Web\Handles\DownloadHandle.cs" />
+        <Compile Include="Web\Handles\FileCopyHandle.cs" />
         <Compile Include="Web\Handles\ProgressHandle.cs" />
         <Compile Include="Web\Handles\UploadHandle.cs" />
         <Compile Include="Web\MetadataBuilder.cs" />

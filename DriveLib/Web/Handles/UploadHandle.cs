@@ -5,18 +5,24 @@ namespace DriveLib.Web.Handles
 {
     public class UploadHandle : ProgressHandle, IUploadProgress
     {
-        public Action ProgressChanged { get; set; }
+        public Action<UploadHandle> ProgressChanged { get; set; }
         public UploadStatus Status { get; set; }
         public long BytesSent { get; set; }
         public Exception Exception { get; set; }
 
-        public float GetProgress()
+        public override float GetProgress()
         {
-            var max = size != 0
-                ? size
+            var max = Size != 0
+                ? Size
                 : 1;
 
             return BytesSent / (float)max;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            ProgressChanged = null;
         }
     }
 }

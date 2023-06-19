@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using DriveLib.Web.Communication;
 using DriveLib.Web.Handles;
-using Google.Apis.Download;
-using Google.Apis.Upload;
 using LogLib.Logging;
 using File = Google.Apis.Drive.v3.Data.File;
 

@@ -1,16 +1,28 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 
 namespace DriveLib.Web.Handles
 {
-    public abstract class ProgressHandle : CancellationTokenSource
+    public abstract class ProgressHandle : CancellationTokenSource, IDisposable
     {
-        public string name;
-        public long size;
+        public long Size { get; set; }
 
         protected ProgressHandle()
         {
-            size = 0;
-            name = string.Empty;
+            Size = 0;
+        }
+
+        public Action<ProgressHandle> ProgressChanged { get; set; }
+
+        public virtual float GetProgress()
+        {
+            return 0;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            ProgressChanged = null;
         }
     }
 }
